@@ -1,0 +1,3 @@
+/.metadata/
+*.pyc
+django_hdm/hdm/migrations/
