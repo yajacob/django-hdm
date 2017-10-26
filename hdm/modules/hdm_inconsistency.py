@@ -1,4 +1,5 @@
 import pandas as pd
+from astropy.coordinates.builtin_frames.utils import norm
 
 class HdmInconsistency:
     matrix_size = 0
@@ -67,8 +68,6 @@ class HdmInconsistency:
         matrix_size = self.matrix_size;
         df = pd.DataFrame(matrix_b)
         matrix_b = df[idx_list].values.tolist()
-        print("matrix_b2:")
-        print(matrix_b)
         matrix = [[0 for col in range(matrix_size-1)] for row in range(matrix_size)]
         
         for i in range(matrix_size):
@@ -88,13 +87,14 @@ class HdmInconsistency:
         
         return matrix_mean
     
-    def step5_normalize(self, matrix_mean):
+    def step5_normalize(self, matrix_mean, idx_list):
         matrix_size = self.matrix_size
         norm_val = [0 for i in range(matrix_size)]
-        norm_val[3] = 1
-        norm_val[2] = self.tround(matrix_mean[2], 2)
-        norm_val[1] = self.tround(norm_val[2] * matrix_mean[1], 2)
-        norm_val[0] = self.tround(norm_val[1] * matrix_mean[0], 2)
+
+        norm_val[idx_list[3]] = 1
+        norm_val[idx_list[2]] = self.tround(matrix_mean[2], 2)
+        norm_val[idx_list[1]] = self.tround(norm_val[idx_list[2]] * matrix_mean[1], 2)
+        norm_val[idx_list[0]] = self.tround(norm_val[idx_list[1]] * matrix_mean[0], 2)
         
         sum_val = 0.0
         for val in norm_val:
@@ -124,9 +124,18 @@ class HdmInconsistency:
                         idx_list = [i,j,k,l]
                         matrix_c = self.step3_matrix_c(matrix_b, idx_list)
                         matrix_mean = self.step4_mean_list(matrix_c)
-                        norm_val = self.step5_normalize(matrix_mean)
+                        norm_val = self.step5_normalize(matrix_mean, idx_list)
                         normalized_list.append(norm_val)
 
+        df = pd.DataFrame(normalized_list)
+        print("mean:")
+        print(df.mean())
+        print("std:")
+        print(df.std())
+        print("var:")
+        print(df.var())
+        print("var sum:")
+        print(df.var().sum())
         return normalized_list
 
 def main():
@@ -134,31 +143,31 @@ def main():
     #resp_data = 'CR111,A,30|CR112,B,70|CR112,B,63|CR114,D,37|CR114,D,83|CR113,C,17|CR111,A,65|CR114,D,35|CR113,C,53|CR111,A,47|CR112,B,79|CR113,C,21'
     
     hi = HdmInconsistency()
-    #matrix_norm_list = hi.main_process(resp_data)
-    #print(matrix_norm_list)
+    matrix_norm_list = hi.main_process(resp_data)
+    print(matrix_norm_list)
 
-    for i in range(2):
-        if i == 0:
-            idx_list = [0,1,2,3]
-        else:
-            idx_list = [0,1,3,2]
-
-        matrix_pair = hi.step1_matrix_a1(resp_data)
-        matrix_a = hi.step1_matrix_a2(matrix_pair)
-        print("matrix_a")
-        print(matrix_a)
-        matrix_b = hi.step2_matrix_b(matrix_a)
-        print("matrix_b:")
-        print(matrix_b)
-        matrix_c = hi.step3_matrix_c(matrix_b, idx_list)
-        print("matrix_c:")
-        print(matrix_c)
-        matrix_mean = hi.step4_mean_list(matrix_c)
-        print("matrix_mean:")
-        print(matrix_mean)
-        norm_val = hi.step5_normalize(matrix_mean)
-        print("norm_val:")
-        print(norm_val)
+#     for i in range(2):
+#         if i == 0:
+#             idx_list = [0,1,2,3]
+#         else:
+#             idx_list = [0,1,3,2]
+# 
+#         matrix_pair = hi.step1_matrix_a1(resp_data)
+#         matrix_a = hi.step1_matrix_a2(matrix_pair)
+#         print("matrix_a")
+#         print(matrix_a)
+#         matrix_b = hi.step2_matrix_b(matrix_a)
+#         print("matrix_b:")
+#         print(matrix_b)
+#         matrix_c = hi.step3_matrix_c(matrix_b, idx_list)
+#         print("matrix_c:")
+#         print(matrix_c)
+#         matrix_mean = hi.step4_mean_list(matrix_c)
+#         print("matrix_mean:")
+#         print(matrix_mean)
+#         norm_val = hi.step5_normalize(matrix_mean, idx_list)
+#         print("norm_val:")
+#         print(norm_val)
 
 if __name__ == "__main__":
     main()
