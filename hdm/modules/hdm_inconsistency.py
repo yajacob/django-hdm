@@ -1,11 +1,15 @@
-import pandas as pd
+import math
+
 from astropy.coordinates.builtin_frames.utils import norm
+
+import pandas as pd
+
 
 class HdmInconsistency:
     matrix_size = 0
     
     def tround(self, num, place):
-        num += pow(0.1, place+4)
+        num += pow(0.1, place + 4)
         return round(num, place)
     
     def step1_matrix_a1(self, resp_data):
@@ -32,9 +36,8 @@ class HdmInconsistency:
     
         return matrix_pair
     
-    #def step1_matrix_a2(self, matrix_pair, idx_list):
     def step1_matrix_a2(self, matrix_pair):
-        idx_list = [0,1,2,3]
+        idx_list = [0, 1, 2, 3]
         pair_size = len(matrix_pair)
         matrix_size = self.matrix_size
     
@@ -61,18 +64,18 @@ class HdmInconsistency:
                 if i == j:
                     matrix[i][j] = 1
                 else:
-                    matrix[i][j] = self.tround(matrix_a[i][j]/matrix_a[j][i], 2)
+                    matrix[i][j] = self.tround(matrix_a[i][j] / matrix_a[j][i], 3)
         return matrix
     
     def step3_matrix_c(self, matrix_b, idx_list):
         matrix_size = self.matrix_size;
         df = pd.DataFrame(matrix_b)
         matrix_b = df[idx_list].values.tolist()
-        matrix = [[0 for col in range(matrix_size-1)] for row in range(matrix_size)]
+        matrix = [[0 for col in range(matrix_size - 1)] for row in range(matrix_size)]
         
         for i in range(matrix_size):
-            for j in range(matrix_size-1):
-                matrix[i][j] = self.tround(matrix_b[i][j]/matrix_b[i][j+1], 2)
+            for j in range(matrix_size - 1):
+                matrix[i][j] = self.tround(matrix_b[i][j] / matrix_b[i][j + 1], 3)
         return matrix
     
     def step4_mean_list(self, matrix_c):
@@ -83,7 +86,7 @@ class HdmInconsistency:
             temp_sum = 0.0
             for j in range(matrix_size):
                 temp_sum += matrix_c[j][i]
-            matrix_mean[i] = self.tround(temp_sum / matrix_size, 2)
+            matrix_mean[i] = self.tround(temp_sum / matrix_size, 3)
         
         return matrix_mean
     
@@ -92,16 +95,16 @@ class HdmInconsistency:
         norm_val = [0 for i in range(matrix_size)]
 
         norm_val[idx_list[3]] = 1
-        norm_val[idx_list[2]] = self.tround(matrix_mean[2], 2)
-        norm_val[idx_list[1]] = self.tround(norm_val[idx_list[2]] * matrix_mean[1], 2)
-        norm_val[idx_list[0]] = self.tround(norm_val[idx_list[1]] * matrix_mean[0], 2)
+        norm_val[idx_list[2]] = self.tround(matrix_mean[2], 3)
+        norm_val[idx_list[1]] = self.tround(norm_val[idx_list[2]] * matrix_mean[1], 3)
+        norm_val[idx_list[0]] = self.tround(norm_val[idx_list[1]] * matrix_mean[0], 3)
         
         sum_val = 0.0
         for val in norm_val:
             sum_val += val
             
         for idx, val in enumerate(norm_val):
-            norm_val[idx] = self.tround(val / sum_val, 2)
+            norm_val[idx] = self.tround(val / sum_val, 3)
         
         return norm_val
 
@@ -113,61 +116,35 @@ class HdmInconsistency:
 
         for i in range(4):
             for j in range(4):
-                if i==j: continue
+                if i == j: continue
                 for k in range(4):
-                    if i==k: continue
-                    if j==k: continue
+                    if i == k: continue
+                    if j == k: continue
                     for l in range(4):
-                        if i==l: continue
-                        if j==l: continue
-                        if k==l: continue
-                        idx_list = [i,j,k,l]
+                        if i == l: continue
+                        if j == l: continue
+                        if k == l: continue
+                        idx_list = [i, j, k, l]
                         matrix_c = self.step3_matrix_c(matrix_b, idx_list)
                         matrix_mean = self.step4_mean_list(matrix_c)
                         norm_val = self.step5_normalize(matrix_mean, idx_list)
                         normalized_list.append(norm_val)
 
         df = pd.DataFrame(normalized_list)
-        print("mean:")
-        print(df.mean())
-        print("std:")
-        print(df.std())
-        print("var:")
-        print(df.var())
-        print("var sum:")
-        print(df.var().sum())
-        return normalized_list
+        
+        #old_consistency = self.tround(df.std().mean(), 4) 
+        new_consistency = self.tround(math.sqrt(df.var().sum()), 4)
+        #print("old inconsistency: %0.4f" % old_consistency)
+        #print("new inconsistency: %0.4f" % new_consistency)
+        return new_consistency
 
 def main():
     resp_data = 'CR111,A,40|CR112,B,60|CR114,D,57|CR113,C,43|CR113,C,75|CR111,A,25|CR112,B,38|CR114,D,62|CR111,A,20|CR114,D,80|CR112,B,50|CR113,C,50'
-    #resp_data = 'CR111,A,30|CR112,B,70|CR112,B,63|CR114,D,37|CR114,D,83|CR113,C,17|CR111,A,65|CR114,D,35|CR113,C,53|CR111,A,47|CR112,B,79|CR113,C,21'
+    # resp_data = 'CR111,A,30|CR112,B,70|CR112,B,63|CR114,D,37|CR114,D,83|CR113,C,17|CR111,A,65|CR114,D,35|CR113,C,53|CR111,A,47|CR112,B,79|CR113,C,21'
     
     hi = HdmInconsistency()
-    matrix_norm_list = hi.main_process(resp_data)
-    print(matrix_norm_list)
-
-#     for i in range(2):
-#         if i == 0:
-#             idx_list = [0,1,2,3]
-#         else:
-#             idx_list = [0,1,3,2]
-# 
-#         matrix_pair = hi.step1_matrix_a1(resp_data)
-#         matrix_a = hi.step1_matrix_a2(matrix_pair)
-#         print("matrix_a")
-#         print(matrix_a)
-#         matrix_b = hi.step2_matrix_b(matrix_a)
-#         print("matrix_b:")
-#         print(matrix_b)
-#         matrix_c = hi.step3_matrix_c(matrix_b, idx_list)
-#         print("matrix_c:")
-#         print(matrix_c)
-#         matrix_mean = hi.step4_mean_list(matrix_c)
-#         print("matrix_mean:")
-#         print(matrix_mean)
-#         norm_val = hi.step5_normalize(matrix_mean, idx_list)
-#         print("norm_val:")
-#         print(norm_val)
+    consistency = hi.main_process(resp_data)
+    print("consistency: %0.4f" % consistency)
 
 if __name__ == "__main__":
     main()
