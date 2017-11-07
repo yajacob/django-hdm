@@ -1,2 +1,8 @@
+<<<<<<< HEAD
 *.pyc
 hdm/migrations/
+=======
+/.metadata/
+*.pyc
+django_hdm/hdm/migrations/
+>>>>>>> branch 'master' of https://github.com/yajacob/django-hdm.git
