@@ -1,10 +1,8 @@
-import os
-import sys
-from django import forms
-sys.path.append( os.path.dirname(os.path.abspath(os.path.dirname(__file__))) )
-from ..models import HDM
+# -*- coding: utf-8 -*-
+from hdm.models import HDM
+from django.forms import ModelForm
 
-class HDMForm(forms.ModelForm):
+class HdmForm(ModelForm):
     class Meta:
         model = HDM
         fields = ('hdm_objective', 'hdm_criteria', 'hdm_factors', 'hdm_alternatives',)

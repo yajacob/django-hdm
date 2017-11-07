@@ -1,3 +1,16 @@
 eclipse.preferences.version=1
 encoding//django_hdm/hdm/migrations/0003_hdm_hdm_experts_no.py=utf-8
 encoding//django_hdm/hdm/templates/hdm/home.html=UTF-8
+encoding//hdm/forms/hdm_forms.py=utf-8
+encoding//hdm/forms/signup.py=utf-8
+encoding//hdm/modules/design_diagram_script.py=utf-8
+encoding//hdm/modules/expert_diagram_script.py=utf-8
+encoding//hdm/modules/hdm_db_query.py=utf-8
+encoding//hdm/urls/__init__.py=utf-8
+encoding//hdm/urls/auth.py=utf-8
+encoding//hdm/urls/hdm.py=utf-8
+encoding//hdm/urls/rest_api.py=utf-8
+encoding//hdm/views/auth.py=utf-8
+encoding//hdm/views/expert.py=utf-8
+encoding//hdm/views/hdm_model.py=utf-8
+encoding//hdm/views/home.py=utf-8

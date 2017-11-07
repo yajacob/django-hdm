@@ -3,7 +3,7 @@ from django.db import connection
 import pandas as pd
 import numpy as np
 
-class HdmEvalCalc:
+class CalcEvaluation:
     def __init__(self, hdm_id=None, eval_dic=None):
         # Model Design
         self.hdm_dic = dict()

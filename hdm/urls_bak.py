@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from django.contrib.auth import views as auth_views
-from . import views as hdm_views
-from .hdm_views.view_result import ViewResult as view_result
+from hdm.__init__ import views as hdm_views
+from hdm.hdm_views.view_result import ViewResult as view_result
 
 urlpatterns = [
     url(r'^$', hdm_views.hdm_home, name='hdm_home'),

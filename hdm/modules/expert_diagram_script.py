@@ -1,11 +1,12 @@
+# -*- coding: utf-8 -*-
 import json
 
-class DiagramScript:
+class ExpertDiagramScript(object):
     def __init__(self, hdm):
         self.result = "var config = "
-        self.hdm_objective = hdm['hdm_objective'].replace("'", "\\'").replace('"', '\\"')
-        self.hdm_criteria = hdm['hdm_criteria'].replace("'", "\\'").replace('"', '\\"')
-        self.hdm_factors = hdm['hdm_factors'].replace("'", "\\'").replace('"', '\\"')
+        self.hdm_objective = hdm.hdm_objective.replace("'", "\\'").replace('"', '\\"')
+        self.hdm_criteria = hdm.hdm_criteria.replace("'", "\\'").replace('"', '\\"')
+        self.hdm_factors = hdm.hdm_factors.replace("'", "\\'").replace('"', '\\"')
         self.model_keys = ['config', 'root', 'CR00']
         self.init_design()
         self.make_criteria()
@@ -33,13 +34,16 @@ class DiagramScript:
         text:{
             name: '%s'
         },
+        link: {
+            href: "javascript:fnEval('CR00')"
+        },
         stackChildren: false,
         HTMLid: "CR00"
     },\n""" % (self.hdm_objective)
     
     def make_criteria(self):
         #cdata = "Color, Memory, Delivery"
-        #print("self.hdm_criteria:"+self.hdm_criteria)
+        print("self.hdm_criteria:"+self.hdm_criteria)
         cdata = self.hdm_criteria.split(",")
         cr_result = ""
         for i in range(len(cdata)):
@@ -53,13 +57,16 @@ class DiagramScript:
                 name: '%s'
             },
             stackChildren: true,
+            link: {
+                href: "javascript:fnEval('%s')"
+            },
             HTMLid: '%s'
-        },\n""" % (key, value, key)
+        },\n""" % (key, value, key, key)
         self.result += cr_result
 
     def make_factors(self):
         #hdm_factors = "Pink, Blue, Yellow|16GB, 32GB, 64GB, 128GB|USPS, UPS, FedEx"
-        #print("self.hdm_factors:"+self.hdm_factors)
+        print("self.hdm_factors:"+self.hdm_factors)
         hdm_factors = self.hdm_factors.split("|")
         cr_result = ""
         for i in range(len(hdm_factors)):
@@ -82,8 +89,11 @@ class DiagramScript:
             text:{
                 name: '%s'
             },
+            link: {
+                href: "javascript:fnEval('%s')"
+            },
             HTMLid: '%s'
-        },\n""" % (key, parent, value, key)
+        },\n""" % (key, parent, value, key, key)
 
         self.result += cr_result
 
