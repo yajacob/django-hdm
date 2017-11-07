@@ -1,6 +1,7 @@
+from bokeh.themes import default
 from django.db import models
 from django.utils import timezone
-from bokeh.themes import default
+
 
 class HDM(models.Model):
     registrant = models.ForeignKey('auth.User')

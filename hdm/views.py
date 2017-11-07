@@ -20,9 +20,9 @@ from .forms.signup_forms import HDMUserCreationForm
 from .forms.hdm_forms import HDMForm
 from .modules.create_design_diagram_script import DiagramScript
 from .modules.create_expert_diagram_script import ExpertDiagramScript
-from .modules.hdm_db_proc import *
-from .modules.hdm_eval_calc import HdmEvalCalc
-from .modules.hdm_result_calc import HdmResultCalc
+from hdm.modules.hdm_db_proc import *
+from hdm.modules.hdm_eval_calc import HdmEvalCalc
+from hdm.modules.hdm_result_calc import HdmResultCalc
 
 def make_list(temp):
     temp_list = temp.split("|")
