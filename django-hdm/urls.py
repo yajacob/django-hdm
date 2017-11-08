@@ -3,5 +3,5 @@ from django.contrib import admin, auth
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'', include('hdm.urls_bak')),
+    url(r'', include('hdm.urls')),
 ]

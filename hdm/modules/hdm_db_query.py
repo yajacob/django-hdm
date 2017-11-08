@@ -2,7 +2,7 @@
 from django.conf import settings
 from django.db import connection
 
-class HdmDBQuery:
+class HdmDBQuery(object):
     
     def getHDMById(self, request, hdm_id):
         cursor = connection.cursor()

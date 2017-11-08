@@ -18,10 +18,11 @@ from django.utils import timezone
 from django.db import connection
 from hdm.models import HDM
 from hdm.forms.signup import SignupForm
-from hdm.modules.hdm_db_proc import *
+from hdm.modules.hdm_db_query import HdmDBQuery
 
 class HomeView(object):
     def hdm_home(self, request):
+        '''
         if request.method == 'POST':
             #form = UserCreationForm(request.POST)
             form = SignupForm(request.POST)
@@ -60,7 +61,10 @@ class HomeView(object):
                 user_list = [dict(zip(columns, row)) for row in cursor.fetchall()]
             
             return render(request, 'hdm/home.html', {'hdm_list': hdm_list, 'user_list':user_list})
+            '''
+        return render(request, 'hdm/home.html')
        
                 
-        def help_manual(self, request):
-            return render(request, 'help/manual.html', {})
+    def help_manual(self, request):
+        return render(request, 'help/manual.html', {})
+        

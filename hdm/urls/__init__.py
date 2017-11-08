@@ -12,8 +12,8 @@ from . import rest_api
 
 
 urlpatterns = [
-    url(r'^$', HomeView.hdm_home(request), name='hdm_home'),
-    url(r'^api/', include(rest_api)),
+    url(r'^$', HomeView.hdm_home, name='hdm_home'),
+    #url(r'^api/', include(rest_api)),
     url(r'^auth/', include(auth)),
     url(r'^hdm/', include(hdm)),
 ]

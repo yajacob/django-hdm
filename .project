@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-<<<<<<< HEAD
 	<name>django-hdm</name>
-=======
-	<name>django_hdm</name>
->>>>>>> branch 'master' of https://github.com/yajacob/django-hdm.git
 	<comment></comment>
 	<projects>
 	</projects>
