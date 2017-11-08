@@ -8,12 +8,13 @@ from hdm.views.home import HomeView
 
 from . import auth
 from . import hdm
-from . import rest_api
+#from . import rest_api
 
 
 urlpatterns = [
-    url(r'^$', HomeView.hdm_home, name='hdm_home'),
+    url(r'^$', HomeView.as_view(), name='hdm_home'),
     #url(r'^api/', include(rest_api)),
     url(r'^auth/', include(auth)),
     url(r'^hdm/', include(hdm)),
+    url(r'^expert/', include(expert)),
 ]

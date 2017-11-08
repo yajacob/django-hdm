@@ -6,16 +6,19 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
 from hdm.forms.signup import UserCreationForm
+from django.views.generic import View
 
-class AuthView(object):
-    def make_list(self,temp):
+class SignupView(View):
+    '''
+    def make_list(self, temp):
         temp_list = temp.split("|")
         rs_list = []
         for tl in temp_list:
             rs_list.append(tl.split(","))
         return rs_list
+    '''
     
-    def signup(self, request):
+    def get(self, request):
         if request.method == 'POST':
             form = UserCreationForm(request.POST)
             if form.is_valid():
@@ -29,8 +32,9 @@ class AuthView(object):
             form = UserCreationForm()
         return render(request, 'accounts/signup.html', {'form': form})
     
+class SignupHomeView(View):
     # Signup from Home
-    def signupHome(self, request):
+    def post(self, request):
         if request.method == 'POST':
             form = UserCreationForm(request.POST)
             if form.is_valid():
@@ -43,8 +47,9 @@ class AuthView(object):
         else:
             form = UserCreationForm()
         return render(request, 'hdm/home.html', {'form': form})
-    
-    def change_password(self, request):
+
+class ChangePassword(View):
+    def post(self, request):
         if request.method == 'POST':
             form = PasswordChangeForm(request.user, request.POST)
             if form.is_valid():

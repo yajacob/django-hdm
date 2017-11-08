@@ -10,6 +10,7 @@ encoding//hdm/modules/expert_diagram_script.py=utf-8
 encoding//hdm/modules/hdm_db_query.py=utf-8
 encoding//hdm/urls/__init__.py=utf-8
 encoding//hdm/urls/auth.py=utf-8
+encoding//hdm/urls/expert.py=utf-8
 encoding//hdm/urls/hdm.py=utf-8
 encoding//hdm/urls/rest_api.py=utf-8
 encoding//hdm/views/auth.py=utf-8

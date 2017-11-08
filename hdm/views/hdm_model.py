@@ -17,7 +17,7 @@ from hdm.modules.expert_diagram_script import ExpertDiagramScript
 from hdm.modules.hdm_db_query import HdmDBQuery
 
 class HdmModelView(object):
-    @login_required(login_url="/accounts/login/")
+    @login_required(login_url="/auth/login/")
     def hdm_model_create(self, request):
         if request.method == "POST":
             form = HdmForm(request.POST)
@@ -63,7 +63,7 @@ class HdmModelView(object):
             response = {'success': False}
         return HttpResponse(json.dumps(response))
 
-    @login_required(login_url="/accounts/login/")
+    @login_required(login_url="/auth/login/")
     def hdm_model_update(self, request, hdm_id):
         # Update Process
         if request.method == "POST":
@@ -94,7 +94,7 @@ class HdmModelView(object):
             range12 = list(range(1, 13))
             return render(request, 'hdm/model_update.html', {'range12': range12, 'hdm': hdm, 'ds':ds, 'hdm_fa':hdm_fa, 'hdm_id':hdm_id})
     
-    @login_required(login_url="/accounts/login/")
+    @login_required(login_url="/auth/login/")
     def hdm_model_manage(self, request):
         if request.user.is_staff == True:
             query = """SELECT a.*, strftime('%m/%d/%Y %H:%M', a.created_date) cre_date,
@@ -118,7 +118,7 @@ class HdmModelView(object):
         hdm_domain = "http://" + request.get_host()
         return render(request, 'hdm/model_manage.html', {'hdm_list': hdm_list}, {'hdm_domain':hdm_domain})
     
-    @login_required(login_url="/accounts/login/")
+    @login_required(login_url="/auth/login/")
     def hdm_model_view(self, request, hdm_id):
         try:
             hdm_dict = HdmDBQuery.getHDMById(request, hdm_id)
@@ -135,7 +135,7 @@ class HdmModelView(object):
     
         return render(request, 'hdm/model_view.html', {'ds':ds, 'hdm_al':hdm_al, 'hdm':hdm_dict, 'eval_cnt':eval_cnt})
     
-    @login_required(login_url="/accounts/login/")
+    @login_required(login_url="/auth/login/")
     def hdm_model_diagram(self, request, hdm_id):
         hdm = HDM.objects.get(id__iexact=hdm_id)
         ds = ExpertDiagramScript(hdm)
@@ -143,7 +143,7 @@ class HdmModelView(object):
         hdm_al = hdm.hdm_alternatives.split(",")
         return render(request, 'hdm/model_diagram.html', {'ds':ds, 'hdm_al':hdm_al})
             
-    @login_required(login_url="/accounts/login/")
+    @login_required(login_url="/auth/login/")
     def hdm_model_delete(self, request, hdm_uuid):
         hdm_id = HdmDBQuery.getIDbyUUID(hdm_uuid)
         if hdm_id is None:
@@ -166,26 +166,3 @@ class HdmModelView(object):
             
         return redirect('/hdm/model_manage/')
 
-    def model_str_clean(self, stype, mstr):
-        result = ""
-        if stype == "fa":
-            # Pink, Blue, Yellow|16GB, 32GB, 64GB, 128GB|USPS, UPS, FedEx|
-            for idx, grp in enumerate(mstr.split("|")):
-                if len(grp) < 1:
-                    continue
-                if idx > 0:
-                    result += "|"
-                for idx2, item in enumerate(grp.split(",")):
-                    if idx2 > 0:
-                        result += ","
-                    result += item.strip()
-        # "cr" or "al"
-        else:
-            # Color, Memory, Delivery
-            for idx, item in enumerate(mstr.split(",")):
-                if len(item) < 1:
-                    continue
-                if idx > 0:
-                    result += ","
-                result += item.strip()
-        return result
