@@ -6,8 +6,7 @@ from django.http import request
 
 from hdm.views.home import HomeView
 
-from . import auth
-from . import hdm
+from . import auth, hdm, expert
 #from . import rest_api
 
 
@@ -17,4 +16,5 @@ urlpatterns = [
     url(r'^auth/', include(auth)),
     url(r'^hdm/', include(hdm)),
     url(r'^expert/', include(expert)),
+#    url(r'', include('hdm.urls')),
 ]
