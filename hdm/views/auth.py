@@ -30,7 +30,7 @@ class SignupView(View):
                 return redirect('/')
         else:
             form = UserCreationForm()
-        return render(request, 'accounts/signup.html', {'form': form})
+        return render(request, 'auth/signup.html', {'form': form})
     
 class SignupHomeView(View):
     # Signup from Home
@@ -61,6 +61,6 @@ class ChangePassword(View):
                 messages.error(request, 'Please correct the error below.')
         else:
             form = PasswordChangeForm(request.user)
-        return render(request, 'accounts/change_password.html', {
+        return render(request, 'auth/change_password.html', {
             'form': form
         })

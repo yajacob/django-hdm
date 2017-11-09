@@ -12,9 +12,10 @@ from . import auth, hdm, expert
 
 urlpatterns = [
     url(r'^$', HomeView.as_view(), name='hdm_home'),
-    #url(r'^api/', include(rest_api)),
     url(r'^auth/', include(auth)),
     url(r'^hdm/', include(hdm)),
     url(r'^expert/', include(expert)),
-#    url(r'', include('hdm.urls')),
 ]
+
+    #url(r'^api/', include(rest_api)),
+    #url(r'', include('hdm.urls')),

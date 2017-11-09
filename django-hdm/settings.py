@@ -123,10 +123,10 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
-AUTH_PROFILE_MODULE = 'accounts.MyProfile'  
+AUTH_PROFILE_MODULE = 'accounts.MyProfile'
 LOGIN_REDIRECT_URL = '/'  
-LOGIN_URL = '/auth/signin/'  
-LOGOUT_URL = '/auth/signout/'
+LOGIN_URL = '/auth/login/'  
+LOGOUT_URL = '/auth/logout/'
 
 MEDIA_ROOT = 'D:/work_django/django-hdm/media/'
 MEDIA_URL = '/media/'
