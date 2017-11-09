@@ -81,7 +81,7 @@ function validateEmail(email)
 					Sign Up for Free HDM Designer</h4>
 				</div>
 				<div class="panel-body">
-		<form method="post" id="form_signup" action="/accounts/signup/"style="padding:0 40px 0 40px;">{% csrf_token %}
+		<form method="post" id="form_signup" action="/auth/signup/"style="padding:0 40px 0 40px;">{% csrf_token %}
 				<p>
 				<label for="id_username">Username:</label><br>
 				<input autofocus="" id="id_username" maxlength="150" name="username" type="text" required="" title="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.">

@@ -43,7 +43,7 @@ class SignupHomeView(View):
                 raw_password = form.cleaned_data.get('password1')
                 user = authenticate(username=username, password=raw_password)
                 login(request, user)
-                return redirect('/accounts/login/')
+                return redirect('/auth/login/')
         else:
             form = UserCreationForm()
         return render(request, 'hdm/home.html', {'form': form})

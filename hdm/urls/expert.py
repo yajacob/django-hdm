@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import url
-from hdm.views.hdm_model import HdmModelView
-from hdm.views.result import ResultView
 from hdm.views.expert import ExpertLoginView, ExpertEvaluateView
 
 urlpatterns = [

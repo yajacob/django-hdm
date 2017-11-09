@@ -12,9 +12,9 @@ import numpy as np
 import pandas as pd
 
 
-class ResultView(View):
-    @login_required(login_url="/accounts/login/")
-    def hdm_model_result(self, request, hdm_id, exp_id):
+class ModelResultView(View):
+    @login_required(login_url="/auth/login/")
+    def get(self, request, hdm_id, exp_id):
         # pandas setting for float number
         pd.options.display.float_format = '{:.4f}'.format
     
@@ -165,8 +165,9 @@ class ResultView(View):
                        'total_df_al':total_df_al_html, 'main_chart_cr':main_chart_cr, 'main_chart_al':main_chart_al})
 
 
-    @login_required(login_url="/accounts/login/")
-    def hdm_result_csv_download(self, request, hdm_id, exp_id):
+class ResultCsvDownload(View):
+    @login_required(login_url="/auth/login/")
+    def get(self, request, hdm_id, exp_id):
         cursor = connection.cursor()
         
         # Individual Result
@@ -265,8 +266,10 @@ class ResultView(View):
                 write_list = []
         
         return response
-    
-    @login_required(login_url="/accounts/login/")
+
+
+class ResultJsonDownload(View):
+    @login_required(login_url="/auth/login/")
     def hdm_result_json_download(self, request, hdm_id, exp_id):
         cursor = connection.cursor()
         
@@ -296,8 +299,8 @@ class ResultView(View):
         return response
     
 
-
-    @login_required(login_url="/accounts/login/")
+    '''
+    @login_required(login_url="/auth/login/")
     # def hdm_model_result(self, request, hdm_id, exp_id):
     def hdm_model_result_bak(self, request, *args, **kwargs):
         hdm_id = ""
@@ -387,4 +390,4 @@ class ResultView(View):
         
         return render(request, 'hdm/model_result.html', {'eval_all_list': eval_all_list, 'eval_list': eval_list, 'hdm_id':hdm_id,
                        'main_result_cr':main_result_cr, 'main_result_fa':main_result_fa, 'main_result_al':main_result_al})
-    
+    '''

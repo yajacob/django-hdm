@@ -43,4 +43,4 @@ class Evaluation(models.Model):
     eval_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.eval_no
+        return str(self.expert_no)

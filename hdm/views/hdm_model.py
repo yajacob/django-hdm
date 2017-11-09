@@ -17,7 +17,7 @@ from hdm.modules.expert_diagram_script import ExpertDiagramScript
 from hdm.modules.hdm_db_query import HdmDBQuery
 from django.views.generic import View
 
-class HdmModelView(View):
+class ModelCreateView(View):
     @login_required(login_url="/auth/login/")
     def post(self, request):
         form = HdmForm(request.POST)
@@ -65,10 +65,10 @@ class HdmModelView(View):
         return HttpResponse(json.dumps(response))
     '''
 
-class HdmUpdate(View):
+# Model Update Form
+class ModelUpdateView(View):
     @login_required(login_url="/auth/login/")
     def post(self, request, hdm_id):
-        # Update Process
         hdm_objective = request.POST.get('hdm_objective')
 
         # clean data
@@ -81,9 +81,8 @@ class HdmUpdate(View):
         cursor.execute(query, (hdm_objective, hdm_criteria, hdm_factors, hdm_alternatives, hdm_id))
         return redirect('/hdm/model_view/' + hdm_id + '/')
 
-    # Update Form
     @login_required(login_url="/auth/login/")
-    def post(self, request, hdm_id):
+    def get(self, request, hdm_id):
         try:
             hdm = HDM.objects.get(id__iexact=hdm_id)
             hdm_dict = {"hdm_objective":hdm.hdm_objective, "hdm_criteria":hdm.hdm_criteria, "hdm_factors":hdm.hdm_factors}
@@ -97,7 +96,7 @@ class HdmUpdate(View):
         range12 = list(range(1, 13))
         return render(request, 'hdm/model_update.html', {'range12': range12, 'hdm': hdm, 'ds':ds, 'hdm_fa':hdm_fa, 'hdm_id':hdm_id})
 
-class HdmManage(View):
+class ModelListView(View):
     @login_required(login_url="/auth/login/")
     def get(self, request):
         if request.user.is_staff == True:
@@ -122,7 +121,7 @@ class HdmManage(View):
         hdm_domain = "http://" + request.get_host()
         return render(request, 'hdm/model_manage.html', {'hdm_list': hdm_list}, {'hdm_domain':hdm_domain})
 
-class HdmView(View):
+class ModelDesignView(View):
     @login_required(login_url="/auth/login/")
     def get(self, request, hdm_id):
         try:
@@ -140,7 +139,7 @@ class HdmView(View):
 
         return render(request, 'hdm/model_view.html', {'ds':ds, 'hdm_al':hdm_al, 'hdm':hdm_dict, 'eval_cnt':eval_cnt})
 
-class HdmDiagram(View):
+class ModelDiagramView(View):
     @login_required(login_url="/auth/login/")
     def get(self, request, hdm_id):
         hdm = HDM.objects.get(id__iexact=hdm_id)
@@ -149,7 +148,7 @@ class HdmDiagram(View):
         hdm_al = hdm.hdm_alternatives.split(",")
         return render(request, 'hdm/model_diagram.html', {'ds':ds, 'hdm_al':hdm_al})
 
-class HdmModelDeleteView(View):
+class ModelDelete(View):
     @login_required(login_url="/auth/login/")
     def hdm_model_delete(self, request, hdm_uuid):
         hdm_id = HdmDBQuery.getIDbyUUID(hdm_uuid)
